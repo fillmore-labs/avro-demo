@@ -1,0 +1,44 @@
+@namespace("com.fillmore_labs.avro_demo.specific")
+protocol AvroRecord {
+  record AvroRecord1 {
+    string field1;
+  }
+
+  record AvroRecord2 {
+    string field1 = "content1";
+  }
+
+  record AvroRecord3 {
+    string @aliases(["alias1"]) field1 = "somethingelse";
+  }
+
+  record AvroRecord4 {
+    string field1 = "content1";
+    null field2 = null;
+  }
+
+  record AvroRecord5 {
+    string field1 = "content1";
+    null field2;
+  }
+
+  record AvroRecord6 {
+    string field1 = "content1";
+    union {null, string} field2 = null;
+  }
+
+  record AvroRecord7 {
+    string field1 = "content1";
+    union {null, string} field2;
+  }
+
+  record AvroRecord8 {
+    string field1 = "content1";
+    union {string, null} field2 = "content2";
+  }
+
+  record AvroRecord9 {
+    string field1 = "content1";
+    union {int, string, null} field2 = 1234;
+  }
+}

@@ -52,3 +52,11 @@ for model in dynamic json reflect specific; do
     echo "--- $model compatible ---"
     bazel run //:confluent_demo -- -m $model compatible
 done
+
+== Source Generation
+
+Generate https://avro.apache.org/docs/1.11.0/spec.html#schemas[Avro schemata] from
+https://avro.apache.org/docs/1.11.0/idl.html[Avro IDL] with
+
+[source,shell]
+sh gen_avsc/gen_avsc.sh
