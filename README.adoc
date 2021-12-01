@@ -1,0 +1,54 @@
+= Avro Demo
+:Author:    Oliver Eikemeier
+:Email:     <eikemeier@fillmore-labs.com>
+:Date:      2021-12
+:Revision:  v0.1
+:toc: macro
+
+image:https://badge.buildkite.com/8e2458d3288ad6632db4a4fe6a57635e89e4c03e7d63d5bdcf.svg?branch=main[title="Buildkite build status",link=https://buildkite.com/fillmore-labs/avro-demo]
+image:https://img.shields.io/github/license/fillmore-labs/avro-demo[title="License",link=https://github.com/fillmore-labs/avro-demo/blob/main/LICENSE]
+
+toc::[]
+
+== Purpose
+
+This source demonstrates some https://avro.apache.org/[Apache Avro] features, also when used with
+the https://github.com/confluentinc/schema-registry[Confluent Schema Registry].
+
+== Running
+
+=== Prerequisites
+
+You need https://github.com/bazelbuild/bazelisk[Bazelisk] installed, with https://brew.sh[HomeBrew]
+just use [source,shell]`brew install bazelbuild/tap/bazelisk`.
+
+=== Demo
+
+[source,shell]
+for action in sample decode schema encode; do
+    for model in dynamic json reflect specific; do
+        echo "--- $model $action ---"
+        bazel run //:avro_demo -- -m $model $action
+    done
+done
+
+[source,shell]
+bazel run //:avro_demo -- -m reflect compatible
+
+[source,shell]
+bazel run //:avro_demo -- transitive
+
+[source,shell]
+for model in dynamic json reflect specific; do
+    echo "--- $model decode ---"
+    bazel run //:confluent_demo -- -m $model decode
+done
+
+[source,shell]
+bazel run //:confluent_demo -- encode
+
+[source,shell]
+for model in dynamic json reflect specific; do
+    echo "--- $model compatible ---"
+    bazel run //:confluent_demo -- -m $model compatible
+done
