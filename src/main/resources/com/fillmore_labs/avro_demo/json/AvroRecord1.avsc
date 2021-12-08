@@ -1,1 +1,9 @@
-{"type":"record","name":"AvroRecord","namespace":"com.fillmore_labs.avro_demo","fields":[{"name":"field1","type":"string"}]}
+{
+  "type" : "record",
+  "name" : "AvroRecord",
+  "namespace" : "com.fillmore_labs.avro_demo.specific",
+  "fields" : [ {
+    "name" : "field1",
+    "type" : "string"
+  } ]
+}
