@@ -66,7 +66,7 @@ public final class CompatibilityHelper {
             var violations = checker.isCompatible(parsedWriterSchema, List.of(parsedReaderSchema));
 
             out.printf(
-                "%s can be read as %s: %s -> %s%s\n",
+                "%s can be read as %s: %s -> %s%s%n",
                 writer,
                 reader,
                 generic,

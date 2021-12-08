@@ -37,7 +37,7 @@ public final class EncodingHelper {
     for (var entry : encoded.entrySet()) {
       var resource = entry.getKey();
       var buffer = entry.getValue();
-      out.printf("%s encoded: %s\n", resource, hex(buffer));
+      out.printf("%s encoded: %s%n", resource, hex(buffer));
     }
   }
 
@@ -50,7 +50,7 @@ public final class EncodingHelper {
       var resource = entry.getKey();
       var buffer = entry.getValue();
       var decoded = decoder.decode(buffer);
-      out.printf("%s decoded: %s\n", resource, decoded);
+      out.printf("%s decoded: %s%n", resource, decoded);
     }
   }
 

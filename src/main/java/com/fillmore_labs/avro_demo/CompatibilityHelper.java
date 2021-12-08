@@ -59,7 +59,7 @@ public final class CompatibilityHelper {
         var decoder = new BinaryMessageDecoder<>(model, readerSchema, resolver);
 
         var decoded = decoder.decode(buffer);
-        out.printf("%s can be read as %s: %s -> %s\n", writer, reader, generic, decoded);
+        out.printf("%s can be read as %s: %s -> %s%n", writer, reader, generic, decoded);
       }
     }
   }
@@ -70,7 +70,7 @@ public final class CompatibilityHelper {
       for (var directCompatible : directCompatibles) {
         for (var reader : graph.successors(directCompatible).stream().sorted().toList()) {
           if (!directCompatibles.contains(reader)) {
-            out.printf("Not transitive: %s -> %s -> %s\n", writer, directCompatible, reader);
+            out.printf("Not transitive: %s -> %s -> %s%n", writer, directCompatible, reader);
           }
         }
       }

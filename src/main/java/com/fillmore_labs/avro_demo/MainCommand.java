@@ -47,7 +47,7 @@ public final class MainCommand {
       var fingerprint = SchemaNormalization.parsingFingerprint64(schema);
 
       out.printf(
-          "%s: %s (fingerprint %s)\n",
+          "%s: %s (fingerprint %s)%n",
           entry.getKey(), schema, String.format("0x%016X", fingerprint));
     }
   }
@@ -59,7 +59,7 @@ public final class MainCommand {
 
     for (var entry : sampleMap.entrySet()) {
       var sample = entry.getValue();
-      out.printf("%s sample: %s\n", entry.getKey(), sample);
+      out.printf("%s sample: %s%n", entry.getKey(), sample);
     }
   }
 

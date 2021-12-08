@@ -12,7 +12,7 @@ public final class Main {
             .setCaseInsensitiveEnumValuesAllowed(true)
             .execute(args);
     if (status != 0) {
-      System.err.printf("\u001B[31mTerminating with status %d\u001B[0m\n", status);
+      System.err.printf("\u001B[31mTerminating with status %d\u001B[0m%n", status);
       System.exit(status);
     }
   }
