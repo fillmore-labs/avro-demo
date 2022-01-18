@@ -20,7 +20,7 @@ the https://github.com/confluentinc/schema-registry[Confluent Schema Registry].
 === Prerequisites
 
 You need https://github.com/bazelbuild/bazelisk[Bazelisk] installed, with https://brew.sh[HomeBrew]
-just use [source,shell]`brew install bazelbuild/tap/bazelisk`.
+just use [source,shell]`brew install bazelisk`.
 
 === Demo
 
