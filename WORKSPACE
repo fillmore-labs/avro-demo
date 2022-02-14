@@ -35,9 +35,9 @@ http_archive(
 
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "390191a0d7884b3e52bb812c440ad1497b9d484241f37bb8e2ccc8c2b72d6c36",
-    strip_prefix = "protobuf-3.19.3",
-    url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v3.19.3.tar.gz",
+    sha256 = "3bd7828aa5af4b13b99c191e8b1e884ebfa9ad371b0ce264605d347f135d2568",
+    strip_prefix = "protobuf-3.19.4",
+    url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v3.19.4.tar.gz",
 )
 
 http_archive(
@@ -49,9 +49,9 @@ http_archive(
 
 http_archive(
     name = "com_github_bazelbuild_buildtools",
-    sha256 = "d368c47bbfc055010f118efb2962987475418737e901f7782d2a966d1dc80296",
-    strip_prefix = "buildtools-4.2.5",
-    url = "https://github.com/bazelbuild/buildtools/archive/refs/tags/4.2.5.tar.gz",
+    sha256 = "7f43df3cca7bb4ea443b4159edd7a204c8d771890a69a50a190dc9543760ca21",
+    strip_prefix = "buildtools-5.0.1",
+    url = "https://github.com/bazelbuild/buildtools/archive/refs/tags/5.0.1.tar.gz",
 )
 
 http_archive(
@@ -149,18 +149,18 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 maven_install(
     artifacts = [
         "com.google.code.findbugs:jsr305:3.0.2",
-        "com.google.code.gson:gson:2.8.9",
-        "com.google.errorprone:error_prone_annotations:2.10.0",
+        "com.google.code.gson:gson:2.9.0",
+        "com.google.errorprone:error_prone_annotations:2.11.0",
         "com.google.flogger:flogger-system-backend:0.7.4",
         "com.google.flogger:flogger:0.7.4",
         "com.google.guava:guava:31.0.1-jre",
         "com.google.j2objc:j2objc-annotations:1.3",
         "com.uber.nullaway:nullaway:0.9.5",
-        "info.picocli:picocli:4.6.2",
+        "info.picocli:picocli:4.6.3",
         "jakarta.annotation:jakarta.annotation-api:1.3.5",
         "org.apache.avro:avro-compiler:1.11.0",
         "org.apache.avro:avro:1.11.0",
-        "org.checkerframework:checker-qual:3.21.1",
+        "org.checkerframework:checker-qual:3.21.2",
         "org.slf4j:slf4j-api:2.0.0-alpha6",
         "org.slf4j:slf4j-jdk14:2.0.0-alpha6",
     ] + AVRO_ARTIFACTS + CONFLUENT_ARTIFACTS,
