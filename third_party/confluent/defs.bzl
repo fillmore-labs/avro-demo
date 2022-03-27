@@ -3,27 +3,27 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 CONFLUENT_ARTIFACTS = [
-    "com.fasterxml.jackson.core:jackson-annotations:2.13.1",
-    "com.fasterxml.jackson.core:jackson-core:2.13.1",
-    "com.fasterxml.jackson.core:jackson-databind:2.13.1",
-    "com.fasterxml.jackson.datatype:jackson-datatype-guava:2.13.1",
-    "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.13.1",
-    "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.13.1",
-    "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.1",
-    "com.fasterxml.jackson.module:jackson-module-parameter-names:2.13.1",
+    "com.fasterxml.jackson.core:jackson-annotations:2.13.2",
+    "com.fasterxml.jackson.core:jackson-core:2.13.2",
+    "com.fasterxml.jackson.core:jackson-databind:2.13.2.1",
+    "com.fasterxml.jackson.datatype:jackson-datatype-guava:2.13.2",
+    "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.13.2",
+    "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.13.2",
+    "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2",
+    "com.fasterxml.jackson.module:jackson-module-parameter-names:2.13.2",
     "com.github.erosb:everit-json-schema:1.14.0",
-    "com.google.api.grpc:proto-google-common-protos:2.7.4",
+    "com.google.api.grpc:proto-google-common-protos:2.8.0",
     "com.kjetland:mbknor-jackson-jsonschema_2.13:1.0.39",
     "com.squareup.wire:wire-runtime:3.7.1",
     "com.squareup.wire:wire-schema:3.7.1",
-    "io.swagger:swagger-annotations:1.6.4",
+    "io.swagger:swagger-annotations:1.6.5",
     "jakarta.servlet:jakarta.servlet-api:4.0.4",
     "jakarta.validation:jakarta.validation-api:2.0.2",
     "jakarta.ws.rs:jakarta.ws.rs-api:2.1.6",
     "org.apache.kafka:kafka-clients:3.1.0",
     "org.apache.kafka:kafka_2.13:3.1.0",
     "org.jetbrains.kotlin:kotlin-stdlib:1.5.32",
-    "org.json:json:20211205",
+    "org.json:json:20220320",
 ]
 
 def confluent_repositories():

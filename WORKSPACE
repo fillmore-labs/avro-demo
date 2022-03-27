@@ -34,10 +34,26 @@ http_archive(
 )
 
 http_archive(
+    name = "rules_pkg",
+    sha256 = "62eeb544ff1ef41d786e329e1536c1d541bb9bcad27ae984d57f18f314018e66",
+    urls = [
+        "https://github.com/bazelbuild/rules_pkg/releases/download/0.6.0/rules_pkg-0.6.0.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.6.0/rules_pkg-0.6.0.tar.gz",
+    ],
+)
+
+http_archive(
     name = "com_google_protobuf",
-    sha256 = "3bd7828aa5af4b13b99c191e8b1e884ebfa9ad371b0ce264605d347f135d2568",
-    strip_prefix = "protobuf-3.19.4",
-    url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v3.19.4.tar.gz",
+    sha256 = "b07772d38ab07e55eca4d50f4b53da2d998bb221575c60a4f81100242d4b4889",
+    strip_prefix = "protobuf-3.20.0",
+    url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v3.20.0.tar.gz",
+)
+
+http_archive(
+    name = "rules_proto",
+    sha256 = "66bfdf8782796239d3875d37e7de19b1d94301e8972b3cbd2446b332429b4df1",
+    strip_prefix = "rules_proto-4.0.0",
+    url = "https://github.com/bazelbuild/rules_proto/archive/refs/tags/4.0.0.tar.gz",
 )
 
 http_archive(
@@ -65,7 +81,7 @@ http_archive(
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
-go_register_toolchains(go_version = "1.17.6")
+go_register_toolchains(go_version = "1.18")
 
 go_rules_dependencies()
 
@@ -84,6 +100,12 @@ rules_jvm_external_deps()
 load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
 
 rules_jvm_external_setup()
+
+# ---
+
+load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
+
+rules_pkg_dependencies()
 
 # ---
 
@@ -153,16 +175,16 @@ maven_install(
         "com.google.errorprone:error_prone_annotations:2.11.0",
         "com.google.flogger:flogger-system-backend:0.7.4",
         "com.google.flogger:flogger:0.7.4",
-        "com.google.guava:guava:31.0.1-jre",
+        "com.google.guava:guava:31.1-jre",
         "com.google.j2objc:j2objc-annotations:1.3",
-        "com.uber.nullaway:nullaway:0.9.5",
+        "com.uber.nullaway:nullaway:0.9.6",
         "info.picocli:picocli:4.6.3",
         "jakarta.annotation:jakarta.annotation-api:1.3.5",
         "org.apache.avro:avro-compiler:1.11.0",
         "org.apache.avro:avro:1.11.0",
-        "org.checkerframework:checker-qual:3.21.2",
-        "org.slf4j:slf4j-api:2.0.0-alpha6",
-        "org.slf4j:slf4j-jdk14:2.0.0-alpha6",
+        "org.checkerframework:checker-qual:3.21.3",
+        "org.slf4j:slf4j-api:2.0.0-alpha7",
+        "org.slf4j:slf4j-jdk14:2.0.0-alpha7",
     ] + AVRO_ARTIFACTS + CONFLUENT_ARTIFACTS,
     fetch_sources = True,
     maven_install_json = "//:maven_install.json",
