@@ -25,6 +25,7 @@ JAVACOPTS = [
     "-XepDisableWarningsInGeneratedCode",
     "-XepAllDisabledChecksAsWarnings",
     "-Xep:Java7ApiChecker:OFF",
+    "-Xep:Java8ApiChecker:OFF",
     "-Xep:AndroidJdkLibsChecker:OFF",
     "-Xep:StaticOrDefaultInterfaceMethod:OFF",
     "-Xep:NoFunctionalReturnType:OFF",

@@ -44,9 +44,9 @@ http_archive(
 
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "b07772d38ab07e55eca4d50f4b53da2d998bb221575c60a4f81100242d4b4889",
-    strip_prefix = "protobuf-3.20.0",
-    url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v3.20.0.tar.gz",
+    sha256 = "f1a83673cbcaff6346a8fba87a9c02c0f943a4a696b6c7d1b71586d97609db12",
+    strip_prefix = "protobuf-21.1",
+    url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v21.1.tar.gz",
 )
 
 http_archive(
@@ -81,7 +81,7 @@ http_archive(
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
-go_register_toolchains(go_version = "1.18")
+go_register_toolchains(go_version = "1.18.3")
 
 go_rules_dependencies()
 
@@ -172,17 +172,17 @@ maven_install(
     artifacts = [
         "com.google.code.findbugs:jsr305:3.0.2",
         "com.google.code.gson:gson:2.9.0",
-        "com.google.errorprone:error_prone_annotations:2.11.0",
+        "com.google.errorprone:error_prone_annotations:2.14.0",
         "com.google.flogger:flogger-system-backend:0.7.4",
         "com.google.flogger:flogger:0.7.4",
         "com.google.guava:guava:31.1-jre",
         "com.google.j2objc:j2objc-annotations:1.3",
-        "com.uber.nullaway:nullaway:0.9.6",
+        "com.uber.nullaway:nullaway:0.9.7",
         "info.picocli:picocli:4.6.3",
         "jakarta.annotation:jakarta.annotation-api:1.3.5",
         "org.apache.avro:avro-compiler:1.11.0",
         "org.apache.avro:avro:1.11.0",
-        "org.checkerframework:checker-qual:3.21.3",
+        "org.checkerframework:checker-qual:3.22.2",
         "org.slf4j:slf4j-api:2.0.0-alpha7",
         "org.slf4j:slf4j-jdk14:2.0.0-alpha7",
     ] + AVRO_ARTIFACTS + CONFLUENT_ARTIFACTS,
