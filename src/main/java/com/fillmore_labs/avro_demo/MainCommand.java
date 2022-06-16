@@ -109,39 +109,20 @@ public final class MainCommand {
   }
 
   private GenericData getModel() {
-    switch (dataModel) {
-      case DYNAMIC:
-        return GenericData.get();
-
-      case JSON:
-        return GenericData.get();
-
-      case REFLECT:
-        return ReflectData.get();
-
-      case SPECIFIC:
-        return SpecificData.get();
-    }
-
-    throw new IllegalArgumentException("Unknown model: " + dataModel);
+    return switch (dataModel) {
+      case DYNAMIC, JSON -> GenericData.get();
+      case REFLECT -> ReflectData.get();
+      case SPECIFIC -> SpecificData.get();
+    };
   }
 
   private ImmutableMap<String, ? extends GenericContainer> createSampleMap() {
-    switch (dataModel) {
-      case DYNAMIC:
-        return DynamicSchemaHelper.createSampleMap();
-
-      case JSON:
-        return JsonSchemaHelper.createSampleMap();
-
-      case REFLECT:
-        return ReflectSchemaHelper.createSampleMap();
-
-      case SPECIFIC:
-        return SpecificSchemaHelper.createSampleMap();
-    }
-
-    throw new IllegalArgumentException("Unknown model: " + dataModel);
+    return switch (dataModel) {
+      case DYNAMIC -> DynamicSchemaHelper.createSampleMap();
+      case JSON -> JsonSchemaHelper.createSampleMap();
+      case REFLECT -> ReflectSchemaHelper.createSampleMap();
+      case SPECIFIC -> SpecificSchemaHelper.createSampleMap();
+    };
   }
 
   @SuppressWarnings("SystemOut")
@@ -168,6 +149,6 @@ public final class MainCommand {
     DYNAMIC,
     JSON,
     REFLECT,
-    SPECIFIC;
+    SPECIFIC
   }
 }

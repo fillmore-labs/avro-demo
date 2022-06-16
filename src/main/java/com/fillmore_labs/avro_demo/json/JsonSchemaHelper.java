@@ -41,16 +41,9 @@ public final class JsonSchemaHelper {
     var builder = new GenericRecordBuilder(schema);
 
     switch (index) {
-      case 1, 3:
-        builder.set("field1", "content1");
-        break;
-
-      case 5, 7, 8, 9:
-        builder.set("field2", null);
-        break;
-
-      default:
-        // accept defaults
+      case 1, 3 -> builder.set("field1", "content1");
+      case 5, 7, 8, 9 -> builder.set("field2", null);
+      default -> {} // accept defaults
     }
 
     return builder.build();

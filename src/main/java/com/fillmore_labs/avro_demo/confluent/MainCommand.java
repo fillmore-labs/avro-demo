@@ -71,51 +71,29 @@ public final class MainCommand {
     CompatibilityHelper.logCompatible(out, graph, schemaMap, encoded, config);
   }
 
-  private Map<String, ?> getConfig() {
+  private ImmutableMap<String, ?> getConfig() {
     var random = new Random().nextInt(10_000);
     var registryUrl = "mock://random-" + random;
 
+    var builder = ImmutableMap.<String, Object>builder();
+    builder.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, registryUrl);
+
     switch (dataModel) {
-      case DYNAMIC:
-        return Map.of(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, registryUrl);
-
-      case JSON:
-        return Map.of(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, registryUrl);
-
-      case REFLECT:
-        return Map.of(
-            AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG,
-            registryUrl,
-            KafkaAvroDeserializerConfig.SCHEMA_REFLECTION_CONFIG,
-            true);
-
-      case SPECIFIC:
-        return Map.of(
-            AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG,
-            registryUrl,
-            KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG,
-            true);
+      case REFLECT -> builder.put(KafkaAvroDeserializerConfig.SCHEMA_REFLECTION_CONFIG, true);
+      case SPECIFIC -> builder.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
+      default -> {}
     }
 
-    throw new IllegalArgumentException("Unknown model: " + dataModel);
+    return builder.build();
   }
 
   private ImmutableMap<String, ? extends GenericContainer> createSampleMap() {
-    switch (dataModel) {
-      case DYNAMIC:
-        return DynamicSchemaHelper.createSampleMap();
-
-      case JSON:
-        return JsonSchemaHelper.createSampleMap();
-
-      case REFLECT:
-        return ReflectSchemaHelper.createSampleMap();
-
-      case SPECIFIC:
-        return SpecificSchemaHelper.createSampleMap();
-    }
-
-    throw new IllegalArgumentException("Unknown model: " + dataModel);
+    return switch (dataModel) {
+      case DYNAMIC -> DynamicSchemaHelper.createSampleMap();
+      case JSON -> JsonSchemaHelper.createSampleMap();
+      case REFLECT -> ReflectSchemaHelper.createSampleMap();
+      case SPECIFIC -> SpecificSchemaHelper.createSampleMap();
+    };
   }
 
   private static ImmutableMap<String, Schema> createSchemaMap(
@@ -131,6 +109,6 @@ public final class MainCommand {
     DYNAMIC,
     JSON,
     REFLECT,
-    SPECIFIC;
+    SPECIFIC
   }
 }
