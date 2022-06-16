@@ -34,15 +34,6 @@ http_archive(
 )
 
 http_archive(
-    name = "rules_pkg",
-    sha256 = "8a298e832762eda1830597d64fe7db58178aa84cd5926d76d5b744d6558941c2",
-    urls = [
-        "https://github.com/bazelbuild/rules_pkg/releases/download/0.7.0/rules_pkg-0.7.0.tar.gz",
-        "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.7.0/rules_pkg-0.7.0.tar.gz",
-    ],
-)
-
-http_archive(
     name = "com_google_protobuf",
     sha256 = "f1a83673cbcaff6346a8fba87a9c02c0f943a4a696b6c7d1b71586d97609db12",
     strip_prefix = "protobuf-21.1",
@@ -61,6 +52,13 @@ http_archive(
     sha256 = "2cd77de091e5376afaf9cc391c15f093ebd0105192373b334f0a855d89092ad5",
     strip_prefix = "rules_jvm_external-4.2",
     url = "https://github.com/bazelbuild/rules_jvm_external/archive/4.2.tar.gz",
+)
+
+http_archive(
+    name = "io_bazel_rules_avro",
+    sha256 = "",
+    strip_prefix = "rules_avro-eee228b5035b098d4b2dc837cdcac8171c56a8b0",
+    url = "https://github.com/chenrui333/rules_avro/archive/eee228b5035b098d4b2dc837cdcac8171c56a8b0.tar.gz",
 )
 
 http_archive(
@@ -100,12 +98,6 @@ rules_jvm_external_deps()
 load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
 
 rules_jvm_external_setup()
-
-# ---
-
-load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
-
-rules_pkg_dependencies()
 
 # ---
 
@@ -154,9 +146,13 @@ google_common_workspace_rules()
 
 # ---
 
-load("//third_party/avro:defs.bzl", "AVRO_ARTIFACTS", "avro_repositories")
+load("@io_bazel_rules_avro//avro:avro.bzl", "avro_repositories")
 
-avro_repositories()
+avro_repositories(version = "1.11.0")
+
+load("@avro//:defs.bzl", pinned_avro_install = "pinned_maven_install")
+
+pinned_avro_install()
 
 # ---
 
@@ -185,7 +181,7 @@ maven_install(
         "org.checkerframework:checker-qual:3.22.2",
         "org.slf4j:slf4j-api:2.0.0-alpha7",
         "org.slf4j:slf4j-jdk14:2.0.0-alpha7",
-    ] + AVRO_ARTIFACTS + CONFLUENT_ARTIFACTS,
+    ] + CONFLUENT_ARTIFACTS,
     fetch_sources = True,
     maven_install_json = "//:maven_install.json",
     override_targets = {
