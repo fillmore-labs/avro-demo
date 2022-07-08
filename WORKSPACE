@@ -35,9 +35,9 @@ http_archive(
 
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "f1a83673cbcaff6346a8fba87a9c02c0f943a4a696b6c7d1b71586d97609db12",
-    strip_prefix = "protobuf-21.1",
-    url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v21.1.tar.gz",
+    sha256 = "ca983c9d2c8f8c935513642bcc4b2cbc64e4046e0bb16bf2ff893128577ece8c",
+    strip_prefix = "protobuf-21.2",
+    url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v21.2.tar.gz",
 )
 
 http_archive(
@@ -56,16 +56,16 @@ http_archive(
 
 http_archive(
     name = "io_bazel_rules_avro",
-    sha256 = "",
+    sha256 = "487c67372ec6eada06a73c3610b02b949941624bf7e12ff21d11e6da6e966bc2",
     strip_prefix = "rules_avro-eee228b5035b098d4b2dc837cdcac8171c56a8b0",
     url = "https://github.com/chenrui333/rules_avro/archive/eee228b5035b098d4b2dc837cdcac8171c56a8b0.tar.gz",
 )
 
 http_archive(
     name = "com_github_bazelbuild_buildtools",
-    sha256 = "7f43df3cca7bb4ea443b4159edd7a204c8d771890a69a50a190dc9543760ca21",
-    strip_prefix = "buildtools-5.0.1",
-    url = "https://github.com/bazelbuild/buildtools/archive/refs/tags/5.0.1.tar.gz",
+    sha256 = "e3bb0dc8b0274ea1aca75f1f8c0c835adbe589708ea89bf698069d0790701ea3",
+    strip_prefix = "buildtools-5.1.0",
+    url = "https://github.com/bazelbuild/buildtools/archive/refs/tags/5.1.0.tar.gz",
 )
 
 http_archive(
@@ -173,7 +173,7 @@ maven_install(
         "com.google.flogger:flogger:0.7.4",
         "com.google.guava:guava:31.1-jre",
         "com.google.j2objc:j2objc-annotations:1.3",
-        "com.uber.nullaway:nullaway:0.9.7",
+        "com.uber.nullaway:nullaway:0.9.8",
         "info.picocli:picocli:4.6.3",
         "jakarta.annotation:jakarta.annotation-api:1.3.5",
         "org.apache.avro:avro-compiler:1.11.0",

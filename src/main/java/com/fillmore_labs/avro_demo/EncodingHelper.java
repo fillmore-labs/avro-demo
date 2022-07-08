@@ -8,9 +8,12 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 import org.apache.avro.generic.GenericContainer;
 import org.apache.avro.generic.GenericData;
+import org.apache.avro.io.DatumWriter;
+import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.SchemaStore;
+import org.apache.avro.util.NonCopyingByteArrayOutputStream;
 
 public final class EncodingHelper {
   private static final int MAGIC_LENGTH = 2;
@@ -28,6 +31,29 @@ public final class EncodingHelper {
       var encoder = new BinaryMessageEncoder<GenericContainer>(model, writerSchema);
       var encoded = encoder.encode(sample);
       builder.put(entry.getKey(), encoded);
+    }
+
+    return builder.build();
+  }
+
+  public static ImmutableMap<String, ByteBuffer> encodeSamplesJson(
+      DatumWriter<GenericContainer> writer, Map<String, ? extends GenericContainer> sampleMap)
+      throws IOException {
+    var builder = ImmutableMap.<String, ByteBuffer>builderWithExpectedSize(sampleMap.size());
+
+    var encoderFactory = EncoderFactory.get();
+    for (var entry : sampleMap.entrySet()) {
+      var sample = entry.getValue();
+      var writerSchema = sample.getSchema();
+      writer.setSchema(writerSchema);
+
+      try (var encoded = new NonCopyingByteArrayOutputStream(512)) {
+        var encoder = encoderFactory.jsonEncoder(writerSchema, encoded, /* pretty= */ true);
+        writer.write(sample, encoder);
+        encoder.flush();
+
+        builder.put(entry.getKey(), encoded.asByteBuffer());
+      }
     }
 
     return builder.build();

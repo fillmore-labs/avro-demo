@@ -8,15 +8,20 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSortedMap;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaNormalization;
 import org.apache.avro.generic.GenericContainer;
 import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericDatumWriter;
+import org.apache.avro.io.DatumWriter;
 import org.apache.avro.message.SchemaStore;
 import org.apache.avro.message.SchemaStore.Cache;
 import org.apache.avro.reflect.ReflectData;
+import org.apache.avro.reflect.ReflectDatumWriter;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.specific.SpecificDatumWriter;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
@@ -73,6 +78,23 @@ public final class MainCommand {
     EncodingHelper.print(out, encoded);
   }
 
+  @Command(name = "encode_json")
+  public void json() throws IOException {
+    var out = getOutputStream();
+    var sampleMap = createSampleMap();
+    var writer = this.<GenericContainer>getDatumWriter();
+    var encoded = EncodingHelper.encodeSamplesJson(writer, sampleMap);
+
+    for (var entry : encoded.entrySet()) {
+      var resource = entry.getKey();
+      var buffer = entry.getValue();
+      var bytes = new byte[buffer.remaining()];
+      buffer.get(bytes);
+      buffer.position(buffer.position() - bytes.length);
+      out.printf("%s encoded: %s%n", resource, new String(bytes, StandardCharsets.UTF_8));
+    }
+  }
+
   @Command(name = "decode")
   public void decode() throws IOException {
     var out = getOutputStream();
@@ -113,6 +135,14 @@ public final class MainCommand {
       case DYNAMIC, JSON -> GenericData.get();
       case REFLECT -> ReflectData.get();
       case SPECIFIC -> SpecificData.get();
+    };
+  }
+
+  private <D> DatumWriter<D> getDatumWriter() {
+    return switch (dataModel) {
+      case DYNAMIC, JSON -> new GenericDatumWriter<>();
+      case REFLECT -> new ReflectDatumWriter<>();
+      case SPECIFIC -> new SpecificDatumWriter<>();
     };
   }
 
