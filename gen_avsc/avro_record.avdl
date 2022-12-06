@@ -24,12 +24,12 @@ protocol AvroRecord {
 
   record AvroRecord6 {
     string field1 = "content1";
-    union {null, string} field2 = null;
+    string? field2 = null;
   }
 
   record AvroRecord7 {
     string field1 = "content1";
-    union {null, string} field2;
+    string? field2;
   }
 
   record AvroRecord8 {

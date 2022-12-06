@@ -1,8 +1,8 @@
 workspace(name = "com_fillmore_labs_avro_demo")
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
 register_toolchains("//toolchain:toolchain_java17_definition")
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_jar")
 
 # ---
 
@@ -34,31 +34,31 @@ http_archive(
 )
 
 http_archive(
-    name = "com_google_protobuf",
-    sha256 = "ca983c9d2c8f8c935513642bcc4b2cbc64e4046e0bb16bf2ff893128577ece8c",
-    strip_prefix = "protobuf-21.2",
-    url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v21.2.tar.gz",
+    name = "rules_proto",
+    sha256 = "80d3a4ec17354cccc898bfe32118edd934f851b03029d63ef3fc7c8663a7415c",
+    strip_prefix = "rules_proto-5.3.0-21.5",
+    url = "https://github.com/bazelbuild/rules_proto/archive/refs/tags/5.3.0-21.5.tar.gz",
 )
 
 http_archive(
-    name = "rules_proto",
-    sha256 = "66bfdf8782796239d3875d37e7de19b1d94301e8972b3cbd2446b332429b4df1",
-    strip_prefix = "rules_proto-4.0.0",
-    url = "https://github.com/bazelbuild/rules_proto/archive/refs/tags/4.0.0.tar.gz",
+    name = "com_google_protobuf",
+    sha256 = "4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639",
+    strip_prefix = "protobuf-21.5",
+    url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v21.5.tar.gz",
 )
 
 http_archive(
     name = "rules_jvm_external",
-    sha256 = "2cd77de091e5376afaf9cc391c15f093ebd0105192373b334f0a855d89092ad5",
-    strip_prefix = "rules_jvm_external-4.2",
-    url = "https://github.com/bazelbuild/rules_jvm_external/archive/4.2.tar.gz",
+    sha256 = "6e9f2b94ecb6aa7e7ec4a0fbf882b226ff5257581163e88bf70ae521555ad271",
+    strip_prefix = "rules_jvm_external-4.5",
+    url = "https://github.com/bazelbuild/rules_jvm_external/archive/4.5.tar.gz",
 )
 
 http_archive(
-    name = "io_bazel_rules_avro",
-    sha256 = "aebc8fc6f8a6a3476d8e8f6f6878fc1cf7a253399e1b2668963e896512be1cc6",
-    strip_prefix = "rules_avro-a4c607a5610bea5649b1fb466ea8abcd9916121b",
-    url = "https://github.com/chenrui333/rules_avro/archive/a4c607a5610bea5649b1fb466ea8abcd9916121b.tar.gz",
+    name = "io_bazel_rules_scala",
+    sha256 = "d6f3f02eaacc3e4c1ac8edfc10d510efb97e3341ba0377a002c60f195dd9105e",
+    strip_prefix = "rules_scala-dee33f45a24bb62f8f0e7cf58665fa40c6159247",
+    url = "https://github.com/bazelbuild/rules_scala/archive/dee33f45a24bb62f8f0e7cf58665fa40c6159247.tar.gz",
 )
 
 http_archive(
@@ -75,11 +75,34 @@ http_archive(
     url = "https://github.com/google/bazel-common/archive/b89cd874d40250d9bab356d40f6ffac8f7aa98f1.tar.gz",
 )
 
+http_archive(
+    name = "io_bazel_rules_avro",
+    sha256 = "aebc8fc6f8a6a3476d8e8f6f6878fc1cf7a253399e1b2668963e896512be1cc6",
+    strip_prefix = "rules_avro-a4c607a5610bea5649b1fb466ea8abcd9916121b",
+    url = "https://github.com/chenrui333/rules_avro/archive/a4c607a5610bea5649b1fb466ea8abcd9916121b.tar.gz",
+)
+
+http_jar(
+    name = "avro_tools",
+    sha256 = "b954e75976c24b72509075b1a298b184db9efe2873bee909d023432f9826db88",
+    urls = [
+        "https://repo.maven.apache.org/maven2/org/apache/avro/avro-tools/1.11.1/avro-tools-1.11.1.jar",
+        "https://repo1.maven.org/maven2/org/apache/avro/avro-tools/1.11.1/avro-tools-1.11.1.jar",
+        "https://archive.apache.org/dist/avro/avro-1.11.1/java/avro-tools-1.11.1.jar",
+    ],
+)
+
+# ---
+
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+
+bazel_skylib_workspace()
+
 # ---
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
-go_register_toolchains(go_version = "1.18.3")
+go_register_toolchains(go_version = "1.19.3")
 
 go_rules_dependencies()
 
@@ -146,13 +169,62 @@ google_common_workspace_rules()
 
 # ---
 
+bind(
+    name = "io_bazel_rules_scala/dependency/scala/guava",
+    actual = "@maven//:com_google_guava_guava",
+)
+
+bind(
+    name = "io_bazel_rules_scala/dependency/thrift/javax_annotation_api",
+    actual = "@maven//:jakarta_annotation_jakarta_annotation_api",
+)
+
+load("@io_bazel_rules_scala//:scala_config.bzl", "scala_config")
+
+scala_config(scala_version = "2.13.10")
+
+load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
+
+scala_repositories(
+    fetch_sources = True,
+    overriden_artifacts = {
+        "io_bazel_rules_scala_scala_compiler": {
+            "artifact": "org.scala-lang:scala-compiler:2.13.10",
+            "deps": [
+                "@io_bazel_rules_scala_scala_library",
+                "@io_bazel_rules_scala_scala_reflect",
+            ],
+            "sha256": "2cd4a964ea48e78c91a2a7b19c4fc67a9868728ace5ee966b1d498270b3c3aa7",
+        },
+        "io_bazel_rules_scala_scala_library": {
+            "artifact": "org.scala-lang:scala-library:2.13.10",
+            "sha256": "e6ca607c3fce03e8fa38af3374ce1f8bb098e316e8bf6f6d27331360feddb1c1",
+        },
+        "io_bazel_rules_scala_scala_reflect": {
+            "artifact": "org.scala-lang:scala-reflect:2.13.10",
+            "deps": [
+                "@io_bazel_rules_scala_scala_library",
+            ],
+            "sha256": "62bd7a7198193c5373a992c122990279e413af3307162472a5d3cbb8ecadb35e",
+        },
+    },
+)
+
+load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
+
+scala_register_toolchains()
+
+# ---
+
 load("@io_bazel_rules_avro//avro:avro.bzl", "avro_repositories")
 
-avro_repositories(version = "1.11.0")
+avro_repositories(version = "1.11.1")
 
-load("@avro//:defs.bzl", pinned_avro_install = "pinned_maven_install")
+# ---
 
-pinned_avro_install()
+load("//third_party/jsonschema:defs.bzl", "jsonschema_repositories")
+
+jsonschema_repositories()
 
 # ---
 
@@ -167,20 +239,20 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 maven_install(
     artifacts = [
         "com.google.code.findbugs:jsr305:3.0.2",
-        "com.google.code.gson:gson:2.9.0",
-        "com.google.errorprone:error_prone_annotations:2.14.0",
+        "com.google.code.gson:gson:2.10",
+        "com.google.errorprone:error_prone_annotations:2.16",
         "com.google.flogger:flogger-system-backend:0.7.4",
         "com.google.flogger:flogger:0.7.4",
         "com.google.guava:guava:31.1-jre",
         "com.google.j2objc:j2objc-annotations:1.3",
-        "com.uber.nullaway:nullaway:0.9.8",
-        "info.picocli:picocli:4.6.3",
-        "jakarta.annotation:jakarta.annotation-api:1.3.5",
-        "org.apache.avro:avro-compiler:1.11.0",
-        "org.apache.avro:avro:1.11.0",
-        "org.checkerframework:checker-qual:3.22.2",
-        "org.slf4j:slf4j-api:2.0.0-alpha7",
-        "org.slf4j:slf4j-jdk14:2.0.0-alpha7",
+        "com.uber.nullaway:nullaway:0.10.5",
+        "info.picocli:picocli:4.7.0",
+        "jakarta.annotation:jakarta.annotation-api:2.1.1",
+        "org.apache.avro:avro-compiler:1.11.1",
+        "org.apache.avro:avro:1.11.1",
+        "org.checkerframework:checker-qual:3.28.0",
+        "org.slf4j:slf4j-api:2.0.5",
+        "org.slf4j:slf4j-jdk14:2.0.5",
     ] + CONFLUENT_ARTIFACTS,
     fetch_sources = True,
     maven_install_json = "//:maven_install.json",
