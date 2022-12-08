@@ -1,5 +1,6 @@
 package com.fillmore_labs.avro_demo;
 
+import com.google.common.graph.ElementOrder;
 import com.google.common.graph.Graph;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.ImmutableGraph;
@@ -20,13 +21,20 @@ public final class CompatibilityHelper {
   private CompatibilityHelper() {}
 
   public static ImmutableGraph<String> calculateCompatibility(Map<String, Schema> schemaMap) {
-    var graphBuilder = GraphBuilder.directed().allowsSelfLoops(true).<String>immutable();
+    var schemata = schemaMap.entrySet();
+
+    var graphBuilder =
+        GraphBuilder.directed()
+            .nodeOrder(ElementOrder.<String>natural())
+            .expectedNodeCount(schemata.size())
+            .allowsSelfLoops(true)
+            .immutable();
 
     var validator = new CanReadValidator();
-    for (var writer : schemaMap.entrySet()) {
+    for (var writer : schemata) {
       var writerSchema = writer.getValue();
 
-      for (var reader : schemaMap.entrySet()) {
+      for (var reader : schemata) {
         var readerSchema = reader.getValue();
         if (validator.canRead(readerSchema, writerSchema)) {
           graphBuilder.putEdge(writer.getKey(), reader.getKey());
@@ -44,17 +52,16 @@ public final class CompatibilityHelper {
       Map<String, ByteBuffer> encoded,
       SchemaStore resolver)
       throws IOException {
-
     var model = GenericData.get();
 
-    for (var writer : graph.nodes().stream().sorted().toList()) {
+    for (var writer : graph.nodes()) {
       var buffer = encoded.get(writer);
 
       var genericDecoder = new BinaryMessageDecoder<>(model, null, resolver);
       var generic = genericDecoder.decode(buffer);
 
       out.println("---");
-      for (var reader : graph.successors(writer).stream().sorted().toList()) {
+      for (var reader : graph.successors(writer)) {
         var readerSchema = schemaMap.get(reader);
         var decoder = new BinaryMessageDecoder<>(model, readerSchema, resolver);
 
@@ -65,10 +72,10 @@ public final class CompatibilityHelper {
   }
 
   public static <N> void logNonTransitive(PrintStream out, Graph<N> graph) {
-    for (var writer : graph.nodes().stream().sorted().toList()) {
+    for (var writer : graph.nodes()) {
       var directCompatibles = graph.successors(writer);
       for (var directCompatible : directCompatibles) {
-        for (var reader : graph.successors(directCompatible).stream().sorted().toList()) {
+        for (var reader : graph.successors(directCompatible)) {
           if (!directCompatibles.contains(reader)) {
             out.printf("Not transitive: %s -> %s -> %s%n", writer, directCompatible, reader);
           }

@@ -69,13 +69,6 @@ http_archive(
 )
 
 http_archive(
-    name = "google_bazel_common",
-    sha256 = "3a2a161687edd5c201acd36595d0c09c3db65f026d5e7d1b5fdf84aa7de1cd73",
-    strip_prefix = "bazel-common-b89cd874d40250d9bab356d40f6ffac8f7aa98f1",
-    url = "https://github.com/google/bazel-common/archive/b89cd874d40250d9bab356d40f6ffac8f7aa98f1.tar.gz",
-)
-
-http_archive(
     name = "io_bazel_rules_avro",
     sha256 = "aebc8fc6f8a6a3476d8e8f6f6878fc1cf7a253399e1b2668963e896512be1cc6",
     strip_prefix = "rules_avro-a4c607a5610bea5649b1fb466ea8abcd9916121b",
@@ -102,7 +95,7 @@ bazel_skylib_workspace()
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
-go_register_toolchains(go_version = "1.19.3")
+go_register_toolchains(go_version = "1.19.4")
 
 go_rules_dependencies()
 
@@ -160,12 +153,6 @@ load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_
 rules_proto_dependencies()
 
 rules_proto_toolchains()
-
-# ---
-
-load("@google_bazel_common//:workspace_defs.bzl", "google_common_workspace_rules")
-
-google_common_workspace_rules()
 
 # ---
 

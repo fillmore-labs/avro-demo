@@ -18,7 +18,6 @@ import picocli.CommandLine.Option;
 
 @Command(name = "confluent_demo", mixinStandardHelpOptions = true)
 public final class MainCommand {
-
   @SuppressWarnings("NullAway.Init")
   @Option(
       names = {"-m", "--model"},

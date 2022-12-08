@@ -1,5 +1,6 @@
 package com.fillmore_labs.avro_demo.confluent;
 
+import com.google.common.graph.ElementOrder;
 import com.google.common.graph.Graph;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.ImmutableGraph;
@@ -20,13 +21,20 @@ public final class CompatibilityHelper {
   private CompatibilityHelper() {}
 
   public static ImmutableGraph<String> calculateCompatibility(Map<String, Schema> schemaMap) {
-    var graphBuilder = GraphBuilder.directed().allowsSelfLoops(true).<String>immutable();
+    var schemata = schemaMap.entrySet();
+
+    var graphBuilder =
+        GraphBuilder.directed()
+            .nodeOrder(ElementOrder.<String>natural())
+            .expectedNodeCount(schemata.size())
+            .allowsSelfLoops(true)
+            .immutable();
 
     var validator = new CanReadValidator();
-    for (var writer : schemaMap.entrySet()) {
+    for (var writer : schemata) {
       var writerSchema = writer.getValue();
 
-      for (var reader : schemaMap.entrySet()) {
+      for (var reader : schemata) {
         var readerSchema = reader.getValue();
         if (validator.canRead(readerSchema, writerSchema)) {
           graphBuilder.putEdge(writer.getKey(), reader.getKey());
@@ -43,10 +51,9 @@ public final class CompatibilityHelper {
       Map<String, Schema> schemaMap,
       Map<String, ByteBuffer> encoded,
       Map<String, ?> config) {
-
     var checker = CompatibilityChecker.checker(CompatibilityLevel.FORWARD);
 
-    for (var writer : graph.nodes().stream().sorted().toList()) {
+    for (var writer : graph.nodes()) {
       var buffer = encoded.get(writer);
 
       if (buffer != null && buffer.hasArray() && buffer.arrayOffset() >= 0) {
@@ -58,7 +65,7 @@ public final class CompatibilityHelper {
           var generic = deserializer.deserialize("TOPIC", buffer.array());
 
           out.println("---");
-          for (var reader : graph.successors(writer).stream().sorted().toList()) {
+          for (var reader : graph.successors(writer)) {
             var readerSchema = schemaMap.get(reader);
             var decoded = deserializer.deserialize("TOPIC", buffer.array(), readerSchema);
 
@@ -71,7 +78,7 @@ public final class CompatibilityHelper {
                 reader,
                 generic,
                 decoded,
-                violations.isEmpty() ? "" : " (Confluent incompatible)");
+                violations.isEmpty() ? "" : " (Confluent Schema Registry forward incompatible)");
           }
         }
       }
