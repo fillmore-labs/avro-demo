@@ -226,7 +226,7 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 maven_install(
     artifacts = [
         "com.google.code.findbugs:jsr305:3.0.2",
-        "com.google.code.gson:gson:2.10",
+        "com.google.code.gson:gson:2.10.1",
         "com.google.errorprone:error_prone_annotations:2.16",
         "com.google.flogger:flogger-system-backend:0.7.4",
         "com.google.flogger:flogger:0.7.4",
