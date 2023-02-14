@@ -232,7 +232,7 @@ maven_install(
         "com.google.flogger:flogger:0.7.4",
         "com.google.guava:guava:31.1-jre",
         "com.google.j2objc:j2objc-annotations:1.3",
-        "com.uber.nullaway:nullaway:0.10.5",
+        "com.uber.nullaway:nullaway:0.10.9",
         "info.picocli:picocli:4.7.0",
         "jakarta.annotation:jakarta.annotation-api:2.1.1",
         "org.apache.avro:avro-compiler:1.11.1",
