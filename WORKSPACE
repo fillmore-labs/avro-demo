@@ -2,7 +2,7 @@ workspace(name = "com_fillmore_labs_avro_demo")
 
 register_toolchains("//toolchain:toolchain_java17_definition")
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_jar")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 # ---
 
@@ -35,16 +35,16 @@ http_archive(
 
 http_archive(
     name = "rules_proto",
-    sha256 = "440f6526600170a4d0027c0d261eda68e23029d0e78f621e8b3f83ede7cdef7f",
+    sha256 = "dc3fb206a2cb3441b485eb1e423165b231235a1ea9b031b4433cf7bc1fa460dd",
     strip_prefix = "rules_proto-5.3.0-21.7",
     url = "https://github.com/bazelbuild/rules_proto/archive/refs/tags/5.3.0-21.7.tar.gz",
 )
 
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "4a7e87e4166c358c63342dddcde6312faee06ea9d5bb4e2fa87d3478076f6639",
-    strip_prefix = "protobuf-21.5",
-    url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v21.5.tar.gz",
+    sha256 = "",
+    strip_prefix = "protobuf-21.7",
+    url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v21.7.tar.gz",
 )
 
 http_archive(
@@ -56,9 +56,9 @@ http_archive(
 
 http_archive(
     name = "io_bazel_rules_scala",
-    sha256 = "e519ce3450ba78d39a5ce483ff37e1e2ca1775b6c28dd6f180a63ce88f5d3a9b",
-    strip_prefix = "rules_scala-6b5bf4a8a358008d37f6c24c83a4f2fa7663b72f",
-    url = "https://github.com/bazelbuild/rules_scala/archive/6b5bf4a8a358008d37f6c24c83a4f2fa7663b72f.tar.gz",
+    sha256 = "1a3d025402a9bd3c38688fa05d7604a9c0ddb6055e99fca923ae6dc3cd5ca86f",
+    strip_prefix = "rules_scala-e63ba1eb5fc542b2badccadb6dac35cd0f873782",
+    url = "https://github.com/bazelbuild/rules_scala/archive/e63ba1eb5fc542b2badccadb6dac35cd0f873782.tar.gz",
 )
 
 http_archive(
@@ -70,19 +70,10 @@ http_archive(
 
 http_archive(
     name = "io_bazel_rules_avro",
+    patches = ["//third_party/rules_avro:rules_avro.patch"],
     sha256 = "df0be97b1be6332c5843e3062f8b232351e5b0537946c90e308c194a4f524c87",
     strip_prefix = "rules_avro-03a3148d0af92a430bfa74fed1c8e6abb0685c8c",
     url = "https://github.com/chenrui333/rules_avro/archive/03a3148d0af92a430bfa74fed1c8e6abb0685c8c.tar.gz",
-)
-
-http_jar(
-    name = "avro_tools",
-    sha256 = "b954e75976c24b72509075b1a298b184db9efe2873bee909d023432f9826db88",
-    urls = [
-        "https://repo.maven.apache.org/maven2/org/apache/avro/avro-tools/1.11.1/avro-tools-1.11.1.jar",
-        "https://repo1.maven.org/maven2/org/apache/avro/avro-tools/1.11.1/avro-tools-1.11.1.jar",
-        "https://archive.apache.org/dist/avro/avro-1.11.1/java/avro-tools-1.11.1.jar",
-    ],
 )
 
 # ---
@@ -95,7 +86,7 @@ bazel_skylib_workspace()
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
-go_register_toolchains(go_version = "1.19.4")
+go_register_toolchains(go_version = "1.20.1")
 
 go_rules_dependencies()
 
@@ -222,6 +213,7 @@ confluent_repositories()
 # ---
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
+load("@rules_jvm_external//:specs.bzl", "maven")
 
 maven_install(
     artifacts = [
@@ -240,6 +232,12 @@ maven_install(
         "org.checkerframework:checker-qual:3.31.0",
         "org.slf4j:slf4j-api:2.0.6",
         "org.slf4j:slf4j-jdk14:2.0.6",
+        maven.artifact(
+            artifact = "avro-tools",
+            exclusions = ["*:*"],
+            group = "org.apache.avro",
+            version = "1.11.1",
+        ),
     ] + CONFLUENT_ARTIFACTS,
     fetch_sources = True,
     maven_install_json = "//:maven_install.json",

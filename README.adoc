@@ -1,8 +1,8 @@
 = Avro Demo
 :Author:    Oliver Eikemeier
 :Email:     <eikemeier@fillmore-labs.com>
-:Date:      2021-12
-:Revision:  v0.1
+:Date:      2023-02
+:Revision:  v0.1.1
 :toc: macro
 
 image:https://badge.buildkite.com/8e2458d3288ad6632db4a4fe6a57635e89e4c03e7d63d5bdcf.svg?branch=main[title="Buildkite build status",link=https://buildkite.com/fillmore-labs/avro-demo]
@@ -52,11 +52,3 @@ for model in dynamic json reflect specific; do
     echo "--- $model compatible ---"
     bazel run //:confluent_demo -- -m $model compatible
 done
-
-== Source Generation
-
-Generate https://avro.apache.org/docs/1.11.0/spec.html#schemas[Avro schemata] from
-https://avro.apache.org/docs/1.11.0/idl.html[Avro IDL] with
-
-[source,shell]
-sh gen_avsc/gen_avsc.sh
