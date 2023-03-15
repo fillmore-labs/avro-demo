@@ -13,7 +13,7 @@ CONFLUENT_ARTIFACTS = [
     "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2",
     "com.fasterxml.jackson.module:jackson-module-parameter-names:2.14.2",
     "com.github.erosb:everit-json-schema:1.14.2",
-    "com.google.api.grpc:proto-google-common-protos:2.14.2",
+    "com.google.api.grpc:proto-google-common-protos:2.14.3",
     "com.squareup.wire:wire-runtime-jvm:4.5.2",
     "com.squareup.wire:wire-schema-jvm:4.5.2",
     "io.swagger.core.v3:swagger-annotations-jakarta:2.2.8",
