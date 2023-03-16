@@ -14,7 +14,7 @@ public final class AvroRecord6Helper {
             .name("field1")
             .type()
             .stringType()
-            .stringDefault("content1")
+            .stringDefault("default 1")
             .optionalString("field2")
             .endRecord();
   }

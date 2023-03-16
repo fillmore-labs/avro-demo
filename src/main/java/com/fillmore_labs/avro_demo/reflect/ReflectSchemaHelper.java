@@ -5,15 +5,15 @@ import com.google.common.collect.ImmutableSortedMap;
 import org.apache.avro.generic.GenericContainer;
 
 public final class ReflectSchemaHelper {
-  private static final String CONTENT1 = "content1";
+  private static final String CONTENT1 = "content 1";
 
   private ReflectSchemaHelper() {}
 
   public static ImmutableMap<String, GenericContainer> createSampleMap() {
     var builder = ImmutableSortedMap.<String, GenericContainer>naturalOrder();
-    for (var index = 1; index <= 9; index++) {
+    for (var index = 1; index <= 12; index++) {
       var record = createSampleRecord(index);
-      builder.put(String.format("Reflect %d", index), record);
+      builder.put(String.format("Reflect %2d", index), record);
     }
     return builder.build();
   }
@@ -64,6 +64,19 @@ public final class ReflectSchemaHelper {
         var r9 = new AvroRecord9();
         r9.field1 = CONTENT1;
         return r9;
+
+      case 10:
+        var r10 = new AvroRecord10();
+        return r10;
+
+      case 11:
+        var r11 = new AvroRecord11();
+        r11.alias1 = "alias 1";
+        return r11;
+
+      case 12:
+        var r12 = new AvroRecord12();
+        return r12;
 
       default:
         throw new IllegalArgumentException(String.format("Index %d out of range", index));

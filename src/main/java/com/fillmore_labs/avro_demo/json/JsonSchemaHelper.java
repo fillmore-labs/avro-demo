@@ -11,7 +11,7 @@ import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.generic.GenericRecordBuilder;
 
 public final class JsonSchemaHelper {
-  private static final int NUM_SCHEMATA = 9;
+  private static final int NUM_SCHEMATA = 12;
 
   private JsonSchemaHelper() {}
 
@@ -20,7 +20,7 @@ public final class JsonSchemaHelper {
     for (var index = 1; index <= NUM_SCHEMATA; index++) {
       var schema = readSchema(index);
       var record = createSampleRecord(index, schema);
-      builder.put(String.format("Json %d", index), record);
+      builder.put(String.format("Json %2d", index), record);
     }
     return builder.build();
   }
@@ -41,8 +41,10 @@ public final class JsonSchemaHelper {
     var builder = new GenericRecordBuilder(schema);
 
     switch (index) {
-      case 1, 3 -> builder.set("field1", "content1");
-      case 5, 7, 8, 9 -> builder.set("field2", null);
+      case 1, 2, 3, 4, 6 -> builder.set("field1", "content 1");
+      case 5, 7, 8, 9 -> builder.set("field1", "content 1").set("field2", null);
+      case 11 -> builder.set("alias1", "alias 1");
+      case 12 -> builder.set("field2", null);
       default -> {} // accept defaults
     }
 

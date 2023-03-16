@@ -2,10 +2,13 @@
   "type" : "record",
   "name" : "AvroRecord",
   "namespace" : "com.fillmore_labs.avro_demo",
+  "aliases" : [
+    "com.fillmore_labs.avro_demo.reflect.AvroRecord11",
+    "com.fillmore_labs.avro_demo.specific.AvroRecord11"
+  ],
   "fields" : [ {
     "name" : "field1",
     "type" : "string",
-    "default" : "somethingelse",
     "aliases" : [ "alias1" ]
   } ]
 }

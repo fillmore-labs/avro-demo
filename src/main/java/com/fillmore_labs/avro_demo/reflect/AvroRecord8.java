@@ -16,10 +16,10 @@ public final class AvroRecord8 implements GenericContainer {
     SCHEMA = MODEL.getSchema(AvroRecord8.class);
   }
 
-  @AvroDefault("\"content1\"")
+  @AvroDefault("\"default 1\"")
   public String field1;
 
-  @AvroDefault("\"content2\"")
+  @AvroDefault("\"default 2\"")
   @Union({String.class, Void.class})
   public String field2;
 

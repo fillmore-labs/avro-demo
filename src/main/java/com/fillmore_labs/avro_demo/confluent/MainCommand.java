@@ -12,6 +12,7 @@ import java.io.PrintStream;
 import java.util.Map;
 import java.util.Random;
 import org.apache.avro.Schema;
+import org.apache.avro.SchemaNormalization;
 import org.apache.avro.generic.GenericContainer;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -23,7 +24,7 @@ public final class MainCommand {
       names = {"-m", "--model"},
       defaultValue = "DYNAMIC",
       description = "Valid values: ${COMPLETION-CANDIDATES}")
-  public DataModel dataModel;
+  public DataModel selectedModel;
 
   private MainCommand() {}
 
@@ -31,46 +32,31 @@ public final class MainCommand {
     return new MainCommand();
   }
 
+  private static ImmutableMap<String, ? extends GenericContainer> createSampleMap(
+      DataModel dataModel) {
+    return switch (dataModel) {
+      case DYNAMIC -> DynamicSchemaHelper.createSampleMap();
+      case JSON -> JsonSchemaHelper.createSampleMap();
+      case REFLECT -> ReflectSchemaHelper.createSampleMap();
+      case SPECIFIC -> SpecificSchemaHelper.createSampleMap();
+    };
+  }
+
   @SuppressWarnings("SystemOut")
   private static PrintStream getOutputStream() {
     return System.out;
   }
 
-  @Command(name = "encode")
-  public void encode() {
-    var out = getOutputStream();
-    var sampleMap = createSampleMap();
-
-    var config = getConfig();
-    var encoded = EncodingHelper.encodeSamples(sampleMap, config);
-
-    EncodingHelper.print(out, encoded);
+  private static ImmutableMap<String, Schema> createSchemaMap(
+      Map<String, ? extends GenericContainer> sampleMap) {
+    var builder = ImmutableSortedMap.<String, Schema>naturalOrder();
+    for (var entry : sampleMap.entrySet()) {
+      builder.put(entry.getKey(), entry.getValue().getSchema());
+    }
+    return builder.build();
   }
 
-  @Command(name = "decode")
-  public void decode() {
-    var out = getOutputStream();
-    var sampleMap = createSampleMap();
-
-    var config = getConfig();
-    var encoded = EncodingHelper.encodeSamples(sampleMap, config);
-
-    EncodingHelper.decode(out, encoded, config);
-  }
-
-  @Command(name = "compatible")
-  public void compatible() {
-    var out = getOutputStream();
-    var sampleMap = createSampleMap();
-    var schemaMap = createSchemaMap(sampleMap);
-    var graph = CompatibilityHelper.calculateCompatibility(schemaMap);
-
-    var config = getConfig();
-    var encoded = EncodingHelper.encodeSamples(sampleMap, config);
-    CompatibilityHelper.logCompatible(out, graph, schemaMap, encoded, config);
-  }
-
-  private ImmutableMap<String, ?> getConfig() {
+  private static ImmutableMap<String, ?> getConfig(DataModel dataModel) {
     var random = new Random().nextInt(10_000);
     var registryUrl = "mock://random-" + random;
 
@@ -86,22 +72,74 @@ public final class MainCommand {
     return builder.build();
   }
 
-  private ImmutableMap<String, ? extends GenericContainer> createSampleMap() {
-    return switch (dataModel) {
-      case DYNAMIC -> DynamicSchemaHelper.createSampleMap();
-      case JSON -> JsonSchemaHelper.createSampleMap();
-      case REFLECT -> ReflectSchemaHelper.createSampleMap();
-      case SPECIFIC -> SpecificSchemaHelper.createSampleMap();
-    };
+  @Command(name = "schema")
+  public void schema() {
+    var out = getOutputStream();
+    var sampleMap = createSampleMap(selectedModel);
+
+    for (var entry : sampleMap.entrySet()) {
+      var sample = entry.getValue();
+      var schema = sample.getSchema();
+      var fingerprint = SchemaNormalization.parsingFingerprint64(schema);
+
+      out.printf(
+          "%s: %s (fingerprint %s)%n",
+          entry.getKey(), schema, String.format("0x%016X", fingerprint));
+    }
   }
 
-  private static ImmutableMap<String, Schema> createSchemaMap(
-      Map<String, ? extends GenericContainer> sampleMap) {
-    var builder = ImmutableSortedMap.<String, Schema>naturalOrder();
+  @Command(name = "sample")
+  public void sample() {
+    var out = getOutputStream();
+    var sampleMap = createSampleMap(selectedModel);
+
     for (var entry : sampleMap.entrySet()) {
-      builder.put(entry.getKey(), entry.getValue().getSchema());
+      var sample = entry.getValue();
+      out.printf("%s sample: %s%n", entry.getKey(), sample);
     }
-    return builder.build();
+  }
+
+  @Command(name = "encode")
+  public void encode() {
+    var out = getOutputStream();
+    var sampleMap = createSampleMap(selectedModel);
+    var config = getConfig(selectedModel);
+    var encoded = EncodingHelper.encodeSamples(sampleMap, config);
+
+    EncodingHelper.print(out, encoded);
+  }
+
+  @Command(name = "decode")
+  public void decode() {
+    var out = getOutputStream();
+    var sampleMap = createSampleMap(selectedModel);
+    var config = getConfig(selectedModel);
+    var encoded = EncodingHelper.encodeSamples(sampleMap, config);
+
+    EncodingHelper.decode(out, encoded, config);
+  }
+
+  @Command(name = "compatible")
+  public void compatible() {
+    var out = getOutputStream();
+
+    var writerMap = createSampleMap(selectedModel);
+    var config = getConfig(selectedModel);
+    var encoded = EncodingHelper.encodeSamples(writerMap, config);
+
+    var builder = ImmutableSortedMap.<String, GenericContainer>naturalOrder();
+    for (var m : DataModel.values()) {
+      var readerMap = createSampleMap(m);
+      builder.putAll(readerMap);
+    }
+    var readerMap = builder.build();
+
+    var writerSchemaMap = createSchemaMap(writerMap);
+    var readerSchemaMap = createSchemaMap(readerMap);
+    var graph = CompatibilityHelper.calculateCompatibility(writerSchemaMap, readerSchemaMap);
+
+    CompatibilityHelper.logCompatible(
+        out, graph, writerSchemaMap, readerSchemaMap, encoded, config);
   }
 
   public enum DataModel {

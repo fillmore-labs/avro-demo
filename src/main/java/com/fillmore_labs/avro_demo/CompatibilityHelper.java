@@ -20,21 +20,19 @@ import org.apache.avro.message.SchemaStore;
 public final class CompatibilityHelper {
   private CompatibilityHelper() {}
 
-  public static ImmutableGraph<String> calculateCompatibility(Map<String, Schema> schemaMap) {
-    var schemata = schemaMap.entrySet();
-
+  public static ImmutableGraph<String> calculateCompatibility(
+      Map<String, Schema> writerMap, Map<String, Schema> readerMap) {
     var graphBuilder =
         GraphBuilder.directed()
             .nodeOrder(ElementOrder.<String>natural())
-            .expectedNodeCount(schemata.size())
             .allowsSelfLoops(true)
             .immutable();
 
     var validator = new CanReadValidator();
-    for (var writer : schemata) {
+    for (var writer : writerMap.entrySet()) {
       var writerSchema = writer.getValue();
 
-      for (var reader : schemata) {
+      for (var reader : readerMap.entrySet()) {
         var readerSchema = reader.getValue();
         if (validator.canRead(readerSchema, writerSchema)) {
           graphBuilder.putEdge(writer.getKey(), reader.getKey());
@@ -48,21 +46,22 @@ public final class CompatibilityHelper {
   public static void logCompatible(
       PrintStream out,
       Graph<String> graph,
-      Map<String, Schema> schemaMap,
+      Map<String, Schema> readerSchemaMap,
       Map<String, ByteBuffer> encoded,
       SchemaStore resolver)
       throws IOException {
     var model = GenericData.get();
 
-    for (var writer : graph.nodes()) {
-      var buffer = encoded.get(writer);
+    for (var e : encoded.entrySet()) {
+      var writer = e.getKey();
+      var buffer = e.getValue();
 
       var genericDecoder = new BinaryMessageDecoder<>(model, null, resolver);
       var generic = genericDecoder.decode(buffer);
 
       out.println("---");
       for (var reader : graph.successors(writer)) {
-        var readerSchema = schemaMap.get(reader);
+        var readerSchema = readerSchemaMap.get(reader);
         var decoder = new BinaryMessageDecoder<>(model, readerSchema, resolver);
 
         var decoded = decoder.decode(buffer);

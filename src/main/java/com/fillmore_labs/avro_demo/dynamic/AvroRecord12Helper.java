@@ -3,7 +3,7 @@ package com.fillmore_labs.avro_demo.dynamic;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 
-public final class AvroRecord4Helper {
+public final class AvroRecord12Helper {
   public static final Schema SCHEMA;
 
   static {
@@ -11,16 +11,9 @@ public final class AvroRecord4Helper {
         SchemaBuilder.builder("com.fillmore_labs.avro_demo")
             .record("AvroRecord")
             .fields()
-            .name("field1")
-            .type()
-            .stringType()
-            .stringDefault("default 1")
-            .name("field2")
-            .type()
-            .nullType()
-            .nullDefault()
+            .optionalString("field2")
             .endRecord();
   }
 
-  private AvroRecord4Helper() {}
+  private AvroRecord12Helper() {}
 }

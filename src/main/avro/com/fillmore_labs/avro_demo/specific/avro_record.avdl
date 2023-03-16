@@ -5,40 +5,56 @@ protocol AvroRecord {
   }
 
   record AvroRecord2 {
-    string field1 = "content1";
+    string field1 = "default 1";
   }
 
+  @aliases([
+      "com.fillmore_labs.avro_demo.AvroRecord",
+      "com.fillmore_labs.avro_demo.reflect.AvroRecord11",
+      "com.fillmore_labs.avro_demo.specific.AvroRecord11"
+  ])
   record AvroRecord3 {
-    string @aliases(["alias1"]) field1 = "somethingelse";
+    string @aliases(["alias1"]) field1;
   }
 
   record AvroRecord4 {
-    string field1 = "content1";
+    string field1 = "default 1";
     null field2 = null;
   }
 
   record AvroRecord5 {
-    string field1 = "content1";
+    string field1 = "default 1";
     null field2;
   }
 
   record AvroRecord6 {
-    string field1 = "content1";
+    string field1 = "default 1";
     string? field2 = null;
   }
 
   record AvroRecord7 {
-    string field1 = "content1";
+    string field1 = "default 1";
     string? field2;
   }
 
   record AvroRecord8 {
-    string field1 = "content1";
-    union {string, null} field2 = "content2";
+    string field1 = "default 1";
+    union {string, null} field2 = "default 2";
   }
 
   record AvroRecord9 {
-    string field1 = "content1";
+    string field1 = "default 1";
     union {int, string, null} field2 = 1234;
+  }
+
+  record AvroRecord10 {
+  }
+
+  record AvroRecord11 {
+    string alias1;
+  }
+
+  record AvroRecord12 {
+    string? field2 = null;
   }
 }

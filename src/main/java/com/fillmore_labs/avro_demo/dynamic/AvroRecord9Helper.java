@@ -14,7 +14,7 @@ public final class AvroRecord9Helper {
             .name("field1")
             .type()
             .stringType()
-            .stringDefault("content1")
+            .stringDefault("default 1")
             .name("field2")
             .type()
             .unionOf()

@@ -10,12 +10,15 @@ public final class AvroRecord3Helper {
     SCHEMA =
         SchemaBuilder.builder("com.fillmore_labs.avro_demo")
             .record("AvroRecord")
+            .aliases(
+                "com.fillmore_labs.avro_demo.reflect.AvroRecord11",
+                "com.fillmore_labs.avro_demo.specific.AvroRecord11")
             .fields()
             .name("field1")
             .aliases("alias1")
             .type()
             .stringType()
-            .stringDefault("somethingelse")
+            .noDefault()
             .endRecord();
   }
 

@@ -14,8 +14,8 @@ public final class AvroRecord8Helper {
             .name("field1")
             .type()
             .stringType()
-            .stringDefault("content1")
-            .nullableString("field2", "content2")
+            .stringDefault("default 1")
+            .nullableString("field2", "default 2")
             .endRecord();
   }
 

@@ -2,9 +2,6 @@
   "type" : "record",
   "name" : "AvroRecord",
   "namespace" : "com.fillmore_labs.avro_demo",
-  "fields" : [ {
-    "name" : "field1",
-    "type" : "string",
-    "default" : "default 1"
-  } ]
+  "fields" : [
+  ]
 }

@@ -3,8 +3,8 @@ package com.fillmore_labs.avro_demo.reflect;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericContainer;
 import org.apache.avro.reflect.AvroDefault;
+import org.apache.avro.reflect.Nullable;
 import org.apache.avro.reflect.ReflectData;
-import org.apache.avro.reflect.Union;
 
 @SuppressWarnings("NullAway")
 public final class AvroRecord7 implements GenericContainer {
@@ -16,11 +16,10 @@ public final class AvroRecord7 implements GenericContainer {
     SCHEMA = MODEL.getSchema(AvroRecord7.class);
   }
 
-  @AvroDefault("\"content1\"")
+  @AvroDefault("\"default 1\"")
   public String field1;
 
-  @Union({Void.class, String.class})
-  public String field2;
+  @Nullable public String field2;
 
   @Override
   public Schema getSchema() {

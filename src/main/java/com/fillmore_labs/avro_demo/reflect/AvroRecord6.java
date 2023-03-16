@@ -16,10 +16,12 @@ public final class AvroRecord6 implements GenericContainer {
     SCHEMA = MODEL.getSchema(AvroRecord6.class);
   }
 
-  @AvroDefault("\"content1\"")
+  @AvroDefault("\"default 1\"")
   public String field1;
 
-  @Nullable public String field2;
+  @Nullable
+  @AvroDefault("null")
+  public String field2;
 
   @Override
   public Schema getSchema() {

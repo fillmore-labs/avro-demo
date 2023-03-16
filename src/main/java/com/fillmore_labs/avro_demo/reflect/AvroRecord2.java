@@ -15,7 +15,7 @@ public final class AvroRecord2 implements GenericContainer {
     SCHEMA = MODEL.getSchema(AvroRecord2.class);
   }
 
-  @AvroDefault("\"content1\"")
+  @AvroDefault("\"default 1\"")
   public String field1;
 
   @Override
