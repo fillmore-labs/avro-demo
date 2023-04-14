@@ -42,7 +42,7 @@ http_archive(
 
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "",
+    sha256 = "75be42bd736f4df6d702a0e4e4d30de9ee40eac024c4b845d17ae4cc831fe4ae",
     strip_prefix = "protobuf-21.7",
     url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v21.7.tar.gz",
 )
@@ -86,7 +86,7 @@ bazel_skylib_workspace()
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
-go_register_toolchains(go_version = "1.20.2")
+go_register_toolchains(go_version = "1.20.3")
 
 go_rules_dependencies()
 
