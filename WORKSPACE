@@ -228,7 +228,7 @@ maven_install(
         "info.picocli:picocli:4.7.4",
         "jakarta.annotation:jakarta.annotation-api:2.1.1",
         "org.apache.avro:avro-compiler:1.11.1",
-        "org.apache.avro:avro:1.11.1",
+        "org.apache.avro:avro:1.11.2",
         "org.checkerframework:checker-qual:3.33.0",
         "org.slf4j:slf4j-api:2.0.7",
         "org.slf4j:slf4j-jdk14:2.0.7",
