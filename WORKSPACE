@@ -227,7 +227,7 @@ maven_install(
         "com.uber.nullaway:nullaway:0.10.11",
         "info.picocli:picocli:4.7.4",
         "jakarta.annotation:jakarta.annotation-api:2.1.1",
-        "org.apache.avro:avro-compiler:1.11.1",
+        "org.apache.avro:avro-compiler:1.11.2",
         "org.apache.avro:avro:1.11.2",
         "org.checkerframework:checker-qual:3.33.0",
         "org.slf4j:slf4j-api:2.0.7",
