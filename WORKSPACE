@@ -225,7 +225,7 @@ maven_install(
         "com.google.guava:guava:32.1.2-jre",
         "com.google.j2objc:j2objc-annotations:2.8",
         "com.uber.nullaway:nullaway:0.10.12",
-        "info.picocli:picocli:4.7.4",
+        "info.picocli:picocli:4.7.5",
         "jakarta.annotation:jakarta.annotation-api:2.1.1",
         "org.apache.avro:avro-compiler:1.11.2",
         "org.apache.avro:avro:1.11.2",
