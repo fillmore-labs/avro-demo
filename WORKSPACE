@@ -230,7 +230,7 @@ maven_install(
         "org.apache.avro:avro-compiler:1.11.2",
         "org.apache.avro:avro:1.11.2",
         "org.checkerframework:checker-qual:3.37.0",
-        "org.slf4j:slf4j-api:2.0.7",
+        "org.slf4j:slf4j-api:2.0.9",
         "org.slf4j:slf4j-jdk14:2.0.7",
         maven.artifact(
             artifact = "avro-tools",
