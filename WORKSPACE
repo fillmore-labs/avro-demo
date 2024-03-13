@@ -222,7 +222,7 @@ maven_install(
         "com.google.errorprone:error_prone_annotations:2.26.1",
         "com.google.flogger:flogger-system-backend:0.8",
         "com.google.flogger:flogger:0.8",
-        "com.google.guava:guava:33.0.0-jre",
+        "com.google.guava:guava:33.1.0-jre",
         "com.google.j2objc:j2objc-annotations:3.0.0",
         "com.uber.nullaway:nullaway:0.10.24",
         "info.picocli:picocli:4.7.5",
