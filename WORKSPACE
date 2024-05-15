@@ -56,9 +56,9 @@ http_archive(
 
 http_archive(
     name = "io_bazel_rules_scala",
-    sha256 = "c1682fb1412ee1689f64c1039f787e7ed156fb2412e90ad50a30e3276c60aab3",
-    strip_prefix = "rules_scala-fa23848e3ffb9f33a483513ca7209909d019b2b4",
-    url = "https://github.com/bazelbuild/rules_scala/archive/fa23848e3ffb9f33a483513ca7209909d019b2b4.tar.gz",
+    sha256 = "9658c9632a5ccaf41534630a27d3b292ad6e3a75573d279c89a209154cb6ab2f",
+    strip_prefix = "rules_scala-e2fe29c3b51647ecd07a562917c2c09fb48f9c0a",
+    url = "https://github.com/bazelbuild/rules_scala/archive/e2fe29c3b51647ecd07a562917c2c09fb48f9c0a.tar.gz",
 )
 
 http_archive(
