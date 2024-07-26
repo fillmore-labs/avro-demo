@@ -8,19 +8,19 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "bazel_skylib",
-    sha256 = "d00f1389ee20b60018e92644e0948e16e350a7707219e7a390fb0a99b6ec9262",
+    sha256 = "bc283cdfcd526a52c3201279cda4bc298652efa898b10b4db0837dc51652756f",
     urls = [
-        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.7.0/bazel-skylib-1.7.0.tar.gz",
-        "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.7.0/bazel-skylib-1.7.0.tar.gz",
+        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.7.1/bazel-skylib-1.7.1.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.7.1/bazel-skylib-1.7.1.tar.gz",
     ],
 )
 
 http_archive(
     name = "io_bazel_rules_go",
-    sha256 = "33acc4ae0f70502db4b893c9fc1dd7a9bf998c23e7ff2c4517741d4049a976f8",
+    sha256 = "d93ef02f1e72c82d8bb3d5169519b36167b33cf68c252525e3b9d3d5dd143de7",
     urls = [
-        "https://github.com/bazelbuild/rules_go/releases/download/v0.48.0/rules_go-v0.48.0.zip",
-        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.48.0/rules_go-v0.48.0.zip",
+        "https://github.com/bazelbuild/rules_go/releases/download/v0.49.0/rules_go-v0.49.0.zip",
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.49.0/rules_go-v0.49.0.zip",
     ],
 )
 
@@ -34,17 +34,10 @@ http_archive(
 )
 
 http_archive(
-    name = "rules_proto",
-    sha256 = "dc3fb206a2cb3441b485eb1e423165b231235a1ea9b031b4433cf7bc1fa460dd",
-    strip_prefix = "rules_proto-5.3.0-21.7",
-    url = "https://github.com/bazelbuild/rules_proto/archive/refs/tags/5.3.0-21.7.tar.gz",
-)
-
-http_archive(
     name = "com_google_protobuf",
-    sha256 = "da288bf1daa6c04d03a9051781caa52aceb9163586bff9aa6cfb12f69b9395aa",
-    strip_prefix = "protobuf-27.0",
-    url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v27.0.tar.gz",
+    sha256 = "e4ff2aeb767da6f4f52485c2e72468960ddfe5262483879ef6ad552e52757a77",
+    strip_prefix = "protobuf-27.2",
+    url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v27.2.tar.gz",
 )
 
 http_archive(
@@ -86,7 +79,7 @@ bazel_skylib_workspace()
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
-go_register_toolchains(go_version = "1.20.3")
+go_register_toolchains(go_version = "1.22.5")
 
 go_rules_dependencies()
 
@@ -136,14 +129,6 @@ bind(
     name = "j2objc_annotations",
     actual = "@maven//:com_google_j2objc_j2objc_annotations",
 )
-
-# ---
-
-load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_proto_toolchains")
-
-rules_proto_dependencies()
-
-rules_proto_toolchains()
 
 # ---
 
@@ -219,7 +204,7 @@ maven_install(
     artifacts = [
         "com.google.code.findbugs:jsr305:3.0.2",
         "com.google.code.gson:gson:2.11.0",
-        "com.google.errorprone:error_prone_annotations:2.28.0",
+        "com.google.errorprone:error_prone_annotations:2.29.2",
         "com.google.flogger:flogger-system-backend:0.8",
         "com.google.flogger:flogger:0.8",
         "com.google.guava:guava:33.2.1-jre",
@@ -229,7 +214,7 @@ maven_install(
         "jakarta.annotation:jakarta.annotation-api:3.0.0",
         "org.apache.avro:avro-compiler:1.11.3",
         "org.apache.avro:avro:1.11.3",
-        "org.checkerframework:checker-qual:3.43.0",
+        "org.checkerframework:checker-qual:3.45.0",
         "org.slf4j:slf4j-api:2.0.13",
         "org.slf4j:slf4j-jdk14:2.0.13",
         maven.artifact(

@@ -61,17 +61,17 @@ public final class EncodingHelper {
 
   public static String hex(ByteBuffer buffer) {
     var magic = new byte[REGISTRY_ID_LENGTH];
-    var registryID = new byte[FINGERPRINT_LENGTH];
+    var registryId = new byte[FINGERPRINT_LENGTH];
     var payload = new byte[buffer.limit() - REGISTRY_ID_LENGTH - FINGERPRINT_LENGTH];
 
     buffer.get(0, magic);
-    buffer.get(REGISTRY_ID_LENGTH, registryID);
+    buffer.get(REGISTRY_ID_LENGTH, registryId);
     buffer.get(REGISTRY_ID_LENGTH + FINGERPRINT_LENGTH, payload);
 
     var baseEncoding = BaseEncoding.base16().withSeparator(" ", 2);
 
     return String.format(
         "magic %s - registry ID %s - payload %s",
-        baseEncoding.encode(magic), baseEncoding.encode(registryID), baseEncoding.encode(payload));
+        baseEncoding.encode(magic), baseEncoding.encode(registryId), baseEncoding.encode(payload));
   }
 }
