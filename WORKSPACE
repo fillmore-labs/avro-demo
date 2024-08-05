@@ -221,7 +221,7 @@ maven_install(
             artifact = "avro-tools",
             exclusions = ["*:*"],
             group = "org.apache.avro",
-            version = "1.11.3",
+            version = "1.12.0",
         ),
     ] + CONFLUENT_ARTIFACTS,
     fetch_sources = True,
