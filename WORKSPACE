@@ -64,9 +64,9 @@ http_archive(
 http_archive(
     name = "io_bazel_rules_avro",
     patches = ["//third_party/rules_avro:rules_avro.patch"],
-    sha256 = "d92109e9333acd65e1f8071397802e3c14e43cd6193ff0f529c57083e4840a12",
-    strip_prefix = "rules_avro-c14ea879bb28083cb1dc555d2014da66a2c1ec06",
-    url = "https://github.com/chenrui333/rules_avro/archive/c14ea879bb28083cb1dc555d2014da66a2c1ec06.tar.gz",
+    sha256 = "ec423e93bce214a38a882db503f174f2b8f1530dc6c5c3c9df093cd05d0b68b1",
+    strip_prefix = "rules_avro-584cc8f0edda55909236b7d1045923d8c792fef8",
+    url = "https://github.com/chenrui333/rules_avro/archive/584cc8f0edda55909236b7d1045923d8c792fef8.tar.gz",
 )
 
 # ---
