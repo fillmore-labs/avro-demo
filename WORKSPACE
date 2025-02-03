@@ -214,7 +214,7 @@ maven_install(
         "jakarta.annotation:jakarta.annotation-api:3.0.0",
         "org.apache.avro:avro-compiler:1.12.0",
         "org.apache.avro:avro:1.12.0",
-        "org.checkerframework:checker-qual:3.45.0",
+        "org.checkerframework:checker-qual:3.49.0",
         "org.slf4j:slf4j-api:2.0.16",
         "org.slf4j:slf4j-jdk14:2.0.16",
         maven.artifact(
